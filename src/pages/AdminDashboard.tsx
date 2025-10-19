@@ -100,10 +100,14 @@ const AdminDashboard = () => {
             <CardDescription>Manage your site content</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              Blog management and AI generation features coming soon. Use Lovable Cloud to view and manage your database directly.
-            </p>
-            <Button onClick={() => navigate("/blog")}>View Published Blogs</Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button onClick={() => navigate("/admin/blogs/new")} className="w-full glow-primary">
+                Create New Blog Post
+              </Button>
+              <Button onClick={() => navigate("/blog")} variant="outline" className="w-full">
+                View Published Blogs
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
