@@ -26,9 +26,9 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center glow-primary transition-all group-hover:scale-110">
-              <span className="text-white font-bold text-lg">S</span>
+              <span className="text-white font-bold text-lg">B</span>
             </div>
-            <span className="text-xl font-bold text-gradient">Sparrow Forge</span>
+            <span className="text-xl font-bold text-gradient">Bamboo Coders</span>
           </Link>
 
           {/* Desktop Navigation */}

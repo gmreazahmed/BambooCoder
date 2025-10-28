@@ -47,7 +47,7 @@ const Home = () => {
     {
       name: "Sarah Johnson",
       role: "CEO, TechStart",
-      content: "Sparrow Forge transformed our vision into a stunning reality. Their expertise in React is unmatched.",
+      content: "Bamboo Coders transformed our vision into a stunning reality. Their expertise in React is unmatched.",
       rating: 5,
     },
     {
@@ -84,7 +84,7 @@ const Home = () => {
               transition={{ duration: 0.5 }}
               className="inline-block mb-6 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full"
             >
-              <span className="text-primary font-medium">Welcome to Sparrow Forge</span>
+              <span className="text-primary font-medium">Welcome to Bamboo Coders</span>
             </motion.div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">

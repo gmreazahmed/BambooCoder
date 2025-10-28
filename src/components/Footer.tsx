@@ -12,9 +12,9 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">S</span>
+                <span className="text-white font-bold text-lg">B</span>
               </div>
-              <span className="text-xl font-bold text-gradient">Sparrow Forge</span>
+              <span className="text-xl font-bold text-gradient">Bamboo Coders</span>
             </div>
             <p className="text-muted-foreground max-w-md">
               Crafting exceptional web experiences with React & Next.js. We turn your ideas into stunning digital realities.
@@ -45,7 +45,7 @@ const Footer = () => {
                 <Linkedin className="h-5 w-5" />
               </a>
               <a
-                href="mailto:hello@sparrowforge.com"
+                href="mailto:hello@bamboocoders.com"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Mail className="h-5 w-5" />
@@ -93,7 +93,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-muted-foreground text-sm">
-          <p>&copy; {currentYear} Sparrow Forge. All rights reserved.</p>
+          <p>&copy; {currentYear} Bamboo Coders. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -39,7 +39,7 @@ const About = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <h1 className="text-5xl font-bold mb-4 text-gradient">About Sparrow Forge</h1>
+            <h1 className="text-5xl font-bold mb-4 text-gradient">About Bamboo Coders</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               We're a team of passionate developers and designers creating exceptional web experiences
             </p>
@@ -54,7 +54,7 @@ const About = () => {
             <Card className="glass p-8">
               <div className="prose prose-lg dark:prose-invert max-w-none">
                 <p>
-                  Founded with a vision to transform the digital landscape, Sparrow Forge has grown into a trusted partner
+                  Founded with a vision to transform the digital landscape, Bamboo Coders has grown into a trusted partner
                   for businesses seeking exceptional web solutions. We specialize in React and Next.js development,
                   combining technical expertise with creative design to deliver products that not only look stunning but
                   perform flawlessly.
@@ -102,8 +102,8 @@ const About = () => {
               Ready to start your next project? We'd love to hear from you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center text-muted-foreground">
-              <a href="mailto:hello@sparrowforge.com" className="hover:text-primary transition-colors">
-                hello@sparrowforge.com
+              <a href="mailto:hello@bamboocoders.com" className="hover:text-primary transition-colors">
+                hello@bamboocoders.com
               </a>
               <span className="hidden sm:inline">•</span>
               <a href="tel:+1234567890" className="hover:text-primary transition-colors">

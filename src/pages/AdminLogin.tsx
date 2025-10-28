@@ -104,9 +104,9 @@ const AdminLogin = () => {
         <div className="text-center mb-8">
           <div className="inline-flex items-center space-x-2 mb-4">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">S</span>
+              <span className="text-white font-bold text-xl">B</span>
             </div>
-            <span className="text-2xl font-bold text-gradient">Sparrow Forge</span>
+            <span className="text-2xl font-bold text-gradient">Bamboo Coders</span>
           </div>
           <h1 className="text-3xl font-bold mb-2">Admin {isSignUp ? "Sign Up" : "Login"}</h1>
           <p className="text-muted-foreground">
