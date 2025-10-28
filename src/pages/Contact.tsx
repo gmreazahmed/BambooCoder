@@ -137,8 +137,8 @@ const Contact = () => {
                   </div>
                   <CardTitle>Email</CardTitle>
                   <CardDescription>
-                    <a href="mailto:hello@sparrowforge.com" className="hover:text-primary transition-colors">
-                      hello@sparrowforge.com
+                    <a href="mailto:bamboocodersbd@gmail.com" className="hover:text-primary transition-colors">
+                      bamboocodersbd@gmail.com
                     </a>
                   </CardDescription>
                 </CardHeader>
