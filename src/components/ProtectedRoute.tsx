@@ -3,6 +3,24 @@ import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
 
+/**
+ * ProtectedRoute Component - Authorization Pattern Documentation
+ * 
+ * SECURITY NOTE: This component performs client-side admin verification for UI control only.
+ * All database operations are protected by Row-Level Security (RLS) policies that enforce
+ * server-side authorization using the has_role() security definer function.
+ * 
+ * Authorization Layers:
+ * 1. Client-side (this component): Controls UI access and user experience
+ * 2. RLS Policies: Enforces server-side authorization on all database operations
+ * 3. Edge Functions: Verify admin role using JWT tokens and user_roles table
+ * 
+ * When adding new admin features, always ensure:
+ * - Database operations have appropriate RLS policies
+ * - Edge functions verify admin role server-side
+ * - Never rely solely on client-side checks for security
+ */
+
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }

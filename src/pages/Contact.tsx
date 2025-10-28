@@ -9,6 +9,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Mail, MapPin, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  message: z.string().trim().min(10, "Message must be at least 10 characters").max(2000, "Message must be less than 2000 characters"),
+});
 
 const Contact = () => {
   const { toast } = useToast();
@@ -22,10 +29,14 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.email || !formData.message) {
+    // Validate input using Zod schema
+    const validation = contactSchema.safeParse(formData);
+    
+    if (!validation.success) {
+      const firstError = validation.error.errors[0];
       toast({
-        title: "Missing fields",
-        description: "Please fill in all fields",
+        title: "Validation Error",
+        description: firstError.message,
         variant: "destructive",
       });
       return;
@@ -33,9 +44,17 @@ const Contact = () => {
 
     try {
       setLoading(true);
+      
+      // Use validated and sanitized data
+      const sanitizedData = {
+        name: validation.data.name,
+        email: validation.data.email,
+        message: validation.data.message,
+      };
+      
       const { error } = await supabase
         .from("contact_messages")
-        .insert([formData]);
+        .insert([sanitizedData]);
 
       if (error) throw error;
 
@@ -46,7 +65,6 @@ const Contact = () => {
 
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
-      console.error("Error sending message:", error);
       toast({
         title: "Error",
         description: "Failed to send message. Please try again.",

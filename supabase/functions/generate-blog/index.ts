@@ -12,6 +12,34 @@ interface GenerateBlogRequest {
   tone?: string;
 }
 
+// Input validation to prevent injection attacks
+const validateInput = (topic: string, tone?: string): { valid: boolean; error?: string } => {
+  // Validate topic
+  if (!topic || typeof topic !== 'string') {
+    return { valid: false, error: "Topic must be a non-empty string" };
+  }
+  
+  const trimmedTopic = topic.trim();
+  if (trimmedTopic.length === 0) {
+    return { valid: false, error: "Topic cannot be empty" };
+  }
+  
+  if (trimmedTopic.length > 200) {
+    return { valid: false, error: "Topic must be less than 200 characters" };
+  }
+  
+  // Validate tone if provided
+  if (tone !== undefined && typeof tone !== 'string') {
+    return { valid: false, error: "Tone must be a string" };
+  }
+  
+  if (tone && tone.trim().length > 50) {
+    return { valid: false, error: "Tone must be less than 50 characters" };
+  }
+  
+  return { valid: true };
+};
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -64,14 +92,19 @@ serve(async (req) => {
 
     const { topic, tone = "professional" }: GenerateBlogRequest = await req.json();
 
-    if (!topic) {
+    // Validate and sanitize input
+    const validation = validateInput(topic, tone);
+    if (!validation.valid) {
       return new Response(
-        JSON.stringify({ error: "Topic is required" }),
+        JSON.stringify({ error: validation.error }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log(`Generating blog for topic: ${topic}, tone: ${tone}`);
+    const sanitizedTopic = topic.trim();
+    const sanitizedTone = tone ? tone.trim() : "professional";
+
+    console.log(`Generating blog for topic: ${sanitizedTopic}, tone: ${sanitizedTone}`);
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -90,11 +123,11 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: `You are an expert technical blog writer for Sparrow Forge, a modern web development agency specializing in React and Next.js. Write engaging, informative blog posts with a ${tone} tone. Include practical examples and insights.`
+            content: `You are an expert technical blog writer for Bamboo Coders, a modern web development agency specializing in React and Next.js. Write engaging, informative blog posts with a ${sanitizedTone} tone. Include practical examples and insights.`
           },
           {
             role: 'user',
-            content: `Write a comprehensive blog post about: ${topic}
+            content: `Write a comprehensive blog post about: ${sanitizedTopic}
 
 The blog should include:
 1. A catchy, SEO-friendly title (max 60 characters)

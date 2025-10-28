@@ -10,6 +10,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Sparkles, Save, ArrowLeft, Eye } from "lucide-react";
+import { z } from "zod";
+
+const blogSchema = z.object({
+  title: z.string().trim().min(1, "Title is required").max(200, "Title must be less than 200 characters"),
+  slug: z.string().trim().min(1, "Slug is required").max(200, "Slug must be less than 200 characters").regex(/^[a-z0-9-]+$/, "Slug must only contain lowercase letters, numbers, and hyphens"),
+  excerpt: z.string().max(160, "Excerpt must be less than 160 characters").optional().or(z.literal("")),
+  content: z.string().trim().min(1, "Content is required").max(50000, "Content must be less than 50000 characters"),
+  thumbnail_url: z.string().url("Invalid URL").optional().or(z.literal("")),
+  status: z.enum(["draft", "published", "archived"]),
+});
 
 const AdminBlogs = () => {
   const navigate = useNavigate();
@@ -93,10 +103,14 @@ const AdminBlogs = () => {
   };
 
   const handleSave = async () => {
-    if (!formData.title || !formData.content) {
+    // Validate input using Zod schema
+    const validation = blogSchema.safeParse(formData);
+    
+    if (!validation.success) {
+      const firstError = validation.error.errors[0];
       toast({
-        title: "Missing fields",
-        description: "Title and content are required",
+        title: "Validation Error",
+        description: firstError.message,
         variant: "destructive",
       });
       return;
@@ -109,9 +123,14 @@ const AdminBlogs = () => {
       if (!user) throw new Error("Not authenticated");
 
       const blogData = {
-        ...formData,
+        title: validation.data.title,
+        slug: validation.data.slug,
+        content: validation.data.content,
+        excerpt: validation.data.excerpt || null,
+        thumbnail_url: validation.data.thumbnail_url || null,
+        status: validation.data.status,
         author_id: user.id,
-        published_at: formData.status === "published" ? new Date().toISOString() : null,
+        published_at: validation.data.status === "published" ? new Date().toISOString() : null,
       };
 
       const { error } = await supabase.from("blogs").insert([blogData]);
@@ -120,12 +139,11 @@ const AdminBlogs = () => {
 
       toast({
         title: "Blog saved!",
-        description: `Your blog post has been ${formData.status === "published" ? "published" : "saved as draft"}`,
+        description: `Your blog post has been ${validation.data.status === "published" ? "published" : "saved as draft"}`,
       });
 
       navigate("/admin");
     } catch (error: any) {
-      console.error("Error saving blog:", error);
       toast({
         title: "Save failed",
         description: error.message || "Failed to save blog post",
