@@ -57,9 +57,18 @@ serve(async (req) => {
     }
 
     const token = authHeader.replace('Bearer ', '');
+    
+    // Create authenticated Supabase client with user's JWT token
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        global: {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      }
     );
 
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
@@ -72,7 +81,7 @@ serve(async (req) => {
       );
     }
 
-    // Check if user has admin role
+    // Check if user has admin role - using authenticated client
     const { data: roleData, error: roleError } = await supabaseClient
       .from('user_roles')
       .select('role')
