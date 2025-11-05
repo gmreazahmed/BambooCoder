@@ -77,11 +77,18 @@ serve(async (req) => {
       .from('user_roles')
       .select('role')
       .eq('user_id', user.id)
-      .eq('role', 'admin')
-      .single();
+      .eq('role', 'admin');
 
-    if (roleError || !roleData) {
-      console.error('Role check failed:', roleError);
+    if (roleError) {
+      console.error('Role check error:', roleError);
+      return new Response(
+        JSON.stringify({ error: "Error checking admin access" }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!roleData || roleData.length === 0) {
+      console.log(`User ${user.id} is not an admin`);
       return new Response(
         JSON.stringify({ error: "Forbidden - Admin access required" }),
         { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
